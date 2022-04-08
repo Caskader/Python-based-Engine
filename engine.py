@@ -1,3 +1,4 @@
+from re import template
 from turtle import color, width
 import pygame
 
@@ -68,6 +69,10 @@ class MainEngine():
 
     def get_event():
         return pygame.event.get()
+    
+    def add_child(obj1,obj2):
+        obj2["pos"] = obj1
+        return obj1
 
 
 class PhysicsEngine():
@@ -118,3 +123,17 @@ class PhysicsEngine():
     def bal_Physics(event, speed: int):
         direction2 = {"x": speed, "y": speed}
         return direction2
+
+class  ProceduralRenderEngine():
+    def add_animation(name:str):
+        with open(name + ".py","w+") as f:
+            template = """
+from engine import ProceduralRenderEngine
+            
+pos = {"x":0,"y":0}
+dir = {"x":0,"y":0}
+# main animation loop
+
+
+            """
+            f.write(template)
