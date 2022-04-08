@@ -1,5 +1,3 @@
-from re import template
-from turtle import color, width
 import pygame
 
 pygame.init()
@@ -24,6 +22,17 @@ keys = {
     "x-":100,
     "y+":119,
     "y-":115
+}
+
+dir={"x":0,"y":0}
+pos={"x":0,"y":0}
+
+obj = {
+    "name":"bar",
+    "shape":"rect",
+    "width":10,
+    "height":100,
+    "color":(100,100,100)
 }
 
 # main loop
