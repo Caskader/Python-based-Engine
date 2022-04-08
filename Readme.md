@@ -13,4 +13,33 @@ Then paste and run file :-
 
 This will create a template for the Engine
 
-# 
+# Basics
+
+This engine is based on ready-made assembly system 
+
+It simplyfies the process of making Physics, Object, Collision and Displaying it .
+
+It is based on the python moduel [Pygame](https://www.pygame.org/news) .
+
+## Understanding the template
+
+---
+
+### Default Sets
+First we set the Clock and some Defaut settings in
+
+`a = MainEngine.default_sets(1000,1000,39)`
+
+`surface = a["surface"]`
+
+Then the Variables for Things like Keymap, Position, Direction, Camera Control, Object Creation .etc
+
+Here the Numders 97,100,119 and 115 represents the W,A,S,D Keys.This keymap is used for making the Physics of an object.
+
+`keys = {
+    "x+":97,
+    "x-":100,
+    "y+":119,
+    "y-":115
+}`
+
