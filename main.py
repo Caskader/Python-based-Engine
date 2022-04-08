@@ -1,6 +1,9 @@
 #import needed moduels
-from engine import MainEngine,PhysicsEngine
+from engine import MainEngine,PhysicsEngine, ProceduralRenderEngine
+import animaton1
 import pygame
+
+# ProceduralRenderEngine.add_animation("animaton1")
 
 #create a surface
 a = MainEngine.default_sets(1000,1000,39)
@@ -30,10 +33,16 @@ obj = {
 EN1 = [pos["x"]]
 EN2 = [pos2["x"]]
 camSpeed = 10
-1# main loop
+# main loop
 running = True
+n = animaton1.load()
 while running:
     surface.fill((0,0,0))
+    # n = animaton1.play()
+    n["pos"]["x"] += 0.1
+    # c = MainEngine.add_child(pos,n)
+    PhysicsEngine.add_object(n["pos"],n["dir"],surface,n["obj"])
+    print(n["pos"])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
