@@ -79,9 +79,9 @@ class MainEngine():
     def get_event():
         return pygame.event.get()
     
-    def add_child(obj1,obj2):
-        obj2["pos"] = obj1
-        return obj1
+    def add_child(obj1,obj2,a):
+        pos = obj1 + a
+        return pos
 
 
 class PhysicsEngine():
