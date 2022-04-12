@@ -1,59 +1,129 @@
 import pygame
+import os
 
 pygame.init()
 direction = {"x": 0, "y": 0, 3: False}
 direction2 = {"x": 0, "y": 0, 3: False}
 
+class docker():
+    def newProject():
+        print("creating template ...")
+        boiler_plate = """
+        #import needed moduels
+    from engine import MainEngine,PhysicsEngine
+    import pygame
 
-def newFile():
-    print("creating template ...")
-    boiler_plate = """
-    #import needed moduels
-from engine import MainEngine,PhysicsEngine
-import pygame
+    #create a surface
+    a = MainEngine.default_sets(1000,1000,39)
+    surface = a["surface"]
 
-#create a surface
-a = MainEngine.default_sets(1000,1000,39)
-surface = a["surface"]
+    #create keyset
+    keys = {
+        "x+":97,
+        "x-":100,
+        "y+":119,
+        "y-":115
+    }
 
-#create keyset
-keys = {
-    "x+":97,
-    "x-":100,
-    "y+":119,
-    "y-":115
-}
+    dir={"x":0,"y":0}
+    pos={"x":0,"y":0}
 
-dir={"x":0,"y":0}
-pos={"x":0,"y":0}
+    obj = {
+        "name":"bar",
+        "shape":"rect",
+        "width":10,
+        "height":100,
+        "color":(100,100,100)
+    }
 
-obj = {
-    "name":"bar",
-    "shape":"rect",
-    "width":10,
-    "height":100,
-    "color":(100,100,100)
-}
+    # main loop
+    running = True
+    while running:
+        surface.fill((0,0,0))
 
-# main loop
-running = True
-while running:
-    surface.fill((0,0,0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        
+        pygame.display.update()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-    
-    pygame.display.update()
+    #end
+    MainEngine.quitEN()
+        """
+        print(os.popen("mkdir Main").read)
+        print("writing file (main.py)...")
+        with open("Main/main.py", "w+") as f:
+            f.write(boiler_plate)
+        print("done")
 
-#end
-MainEngine.quitEN()
-    """
-    print("writing file (main.py)...")
-    with open("main.py", "w+") as f:
-        f.write(boiler_plate)
-    print("done")
+        print("creting template ...")
+        boiler_plate2 = """    
+    from engine import *
+    run = True
+    def load():
+        pos = {"x":0,"y":0}
+        dir = {"x":0,"y":0}
+        running = True
+        maxTime = 10
+        time = 0 
+        delt = 0.01
+        o = {
+        "name":"bar",
+        "shape":"rect",
+        "width":100,
+        "height":100,
+        "color":(100,100,100)
+        }
+        animation = {
+            "pos":pos,
+            "dir":dir,
+            "obj":o,
+            "time": time,
+            "maxTime":maxTime,
+            "running":running,
+            "delt": delt,
+            "color":(250,250,250),
+            "width":100,
+            "height":180,
+            "shape":"rect"
+        }
+        return animation
 
+    def run(animation) -> dict:
+        time = animation["time"]
+        maxTime = animation["maxTime"]
+        while animation["running"]:
+
+            output = {
+            "pos":animation["pos"],
+            "dir":animation["dir"],
+            "obj":animation["obj"],
+            "time": time,
+            "maxTime":maxTime,
+            "running":animation["running"],
+            "delt": animation["delt"],
+            "color":animation["color"],
+            "width":animation['width'],
+            "height":animation["height"],
+            "shape":"rect"
+        }
+            if time >= maxTime:
+                animation["running"] = False
+        return output
+        """
+        os.popen("mkdir animations")
+        print("writting file (anima.py) ...")
+        with open("animations/anima.py","w+") as f:
+            f.write(boiler_plate2)
+        print("done")
+
+        print("writing file (dock.py)")
+        with open("dock.py","w+") as f:
+            s = """
+from engine import docker
+            """
+            f.write(s)
+        print("done")
 
 class MainEngine():
     def _get_obj(name:str):
