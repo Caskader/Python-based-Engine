@@ -9,112 +9,39 @@ class docker():
     def newProject():
         print("creating template ...")
         boiler_plate = """
-        #import needed moduels
-    from engine import MainEngine,PhysicsEngine
-    import pygame
+#import needed moduels
+from engine import MainEngine,PhysicsEngine
+import pygame
 
-    #create a surface
-    a = MainEngine.default_sets(1000,1000,39)
-    surface = a["surface"]
+#create a surface
+a = MainEngine.default_sets(1000,1000,39)
+surface = a["surface"]
 
-    #create keyset
-    keys = {
-        "x+":97,
-        "x-":100,
-        "y+":119,
-        "y-":115
-    }
+#create keyset
+keys = {
+    "x+":97,
+    "x-":100,
+    "y+":119,
+    "y-":115
+}
 
-    dir={"x":0,"y":0}
-    pos={"x":0,"y":0}
+# main loop
+running = True
+while running:
+    surface.fill((0,0,0))
 
-    obj = {
-        "name":"bar",
-        "shape":"rect",
-        "width":10,
-        "height":100,
-        "color":(100,100,100)
-    }
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    
+    pygame.display.update()
 
-    # main loop
-    running = True
-    while running:
-        surface.fill((0,0,0))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-        
-        pygame.display.update()
-
-    #end
-    MainEngine.quitEN()
+#end
+MainEngine.quitEN()
         """
-        print(os.popen("mkdir Main").read)
         print("writing file (main.py)...")
-        with open("Main/main.py", "w+") as f:
+        with open("main.py", "w+") as f:
             f.write(boiler_plate)
-        print("done")
-
-        print("creting template ...")
-        boiler_plate2 = """    
-    from engine import *
-    run = True
-    def load():
-        pos = {"x":0,"y":0}
-        dir = {"x":0,"y":0}
-        running = True
-        maxTime = 10
-        time = 0 
-        delt = 0.01
-        o = {
-        "name":"bar",
-        "shape":"rect",
-        "width":100,
-        "height":100,
-        "color":(100,100,100)
-        }
-        animation = {
-            "pos":pos,
-            "dir":dir,
-            "obj":o,
-            "time": time,
-            "maxTime":maxTime,
-            "running":running,
-            "delt": delt,
-            "color":(250,250,250),
-            "width":100,
-            "height":180,
-            "shape":"rect"
-        }
-        return animation
-
-    def run(animation) -> dict:
-        time = animation["time"]
-        maxTime = animation["maxTime"]
-        while animation["running"]:
-
-            output = {
-            "pos":animation["pos"],
-            "dir":animation["dir"],
-            "obj":animation["obj"],
-            "time": time,
-            "maxTime":maxTime,
-            "running":animation["running"],
-            "delt": animation["delt"],
-            "color":animation["color"],
-            "width":animation['width'],
-            "height":animation["height"],
-            "shape":"rect"
-        }
-            if time >= maxTime:
-                animation["running"] = False
-        return output
-        """
-        os.popen("mkdir animations")
-        print("writting file (anima.py) ...")
-        with open("animations/anima.py","w+") as f:
-            f.write(boiler_plate2)
         print("done")
 
         print("writing file (dock.py)")
@@ -125,16 +52,90 @@ from engine import docker
             f.write(s)
         print("done")
 
+    def new_animation(name:str):
+            print("creting template ...")
+            boiler_plate2 = """    
+from engine import *
+run = True
+def load():
+pos = {"x":0,"y":0}
+dir = {"x":0,"y":0}
+running = True
+maxTime = 10
+time = 0 
+delt = 0.01
+o = {
+"name":"bar",
+"shape":"rect",
+"width":100,
+"height":100,
+"color":(100,100,100)
+}
+animation = {
+    "pos":pos,
+    "dir":dir,
+    "obj":o,
+    "time": time,
+    "maxTime":maxTime,
+    "running":running,
+    "delt": delt,
+    "color":(250,250,250),
+    "width":100,
+    "height":180,
+    "shape":"rect"
+}
+return animation
+
+def run(animation) -> dict:
+time = animation["time"]
+maxTime = animation["maxTime"]
+while animation["running"]:
+
+    output = {
+    "pos":animation["pos"],
+    "dir":animation["dir"],
+    "obj":animation["obj"],
+    "time": time,
+    "maxTime":maxTime,
+    "running":animation["running"],
+    "delt": animation["delt"],
+    "color":animation["color"],
+    "width":animation['width'],
+    "height":animation["height"],
+    "shape":"rect"
+}
+    if time >= maxTime:
+        animation["running"] = False
+return output
+        """
+            print("writting file (anima.py) ...")
+            with open(name,"w+") as f:
+                f.write(boiler_plate2)
+            print("done")
+
+            print("writing file (dock.py)")
+            with open("dock.py","w+") as f:
+                s = """
+from engine import docker
+            """
+                f.write(s)
+            print("done")
+    
+    def new_obj(name):
+        x = """
+class obj1():
+    def __init__(self) -> None:
+        self.pos = {'x':0,'y':0}
+        self.dir = {'x':0,'y':0}
+        self.width = 10
+        self.height = 100
+        self.color = (250,250,250)
+        self.shape = 'rect'
+    """
+        with open(name + ".py","w+") as f:
+            f.write(x)
+
 class MainEngine():
-    def _get_obj(name:str):
-        input = {
-            1:10
-        }
-        with open(name + ".obj","w+") as file:
-            file.write(str(input))
-        with open(name + ".obj","r") as file:
-            output = file.readline()
-        return output
 
     def quitEN() -> None:
         pygame.quit()
@@ -159,15 +160,19 @@ class PhysicsEngine():
         return obj1.colliderect(obj2)
 
 
-    def add_object(pos: dict[2], dir: dict[2], surface, obj) -> None:
-        pos["x"] += dir["x"]
-        pos["y"] += dir["y"]
-        color = obj["color"]
-        width = obj["width"]
-        height = obj["height"]
+    def add_object(surface, obj) -> None:
+        obj.pos["x"] += obj.dir["x"]
+        obj.pos["y"] += obj.dir["y"]
+        color = obj.color
+        width = obj.width
+        height = obj.height
 
-        if obj["shape"] == "rect":
-            a = pygame.draw.rect(surface, color, (pos["x"], pos["y"], width, height))
+        a = None
+        try:
+            if obj.shape == "rect":
+                a = pygame.draw.rect(surface, color, (obj.pos["x"], obj.pos["y"], width, height))
+        except:
+            print("an error occured")
         return a
 
     def moving_body( keyset:dict,event, speed:int) -> dict[3]:
