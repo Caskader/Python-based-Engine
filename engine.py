@@ -58,58 +58,58 @@ class docker():
 
         print("creting template ...")
         boiler_plate2 = """    
-    from engine import *
-    run = True
-    def load():
-        pos = {"x":0,"y":0}
-        dir = {"x":0,"y":0}
-        running = True
-        maxTime = 10
-        time = 0 
-        delt = 0.01
-        o = {
-        "name":"bar",
-        "shape":"rect",
-        "width":100,
-        "height":100,
-        "color":(100,100,100)
-        }
-        animation = {
-            "pos":pos,
-            "dir":dir,
-            "obj":o,
-            "time": time,
-            "maxTime":maxTime,
-            "running":running,
-            "delt": delt,
-            "color":(250,250,250),
-            "width":100,
-            "height":180,
-            "shape":"rect"
-        }
-        return animation
+from engine import *
+run = True
+def load():
+pos = {"x":0,"y":0}
+dir = {"x":0,"y":0}
+running = True
+maxTime = 10
+time = 0 
+delt = 0.01
+o = {
+"name":"bar",
+"shape":"rect",
+"width":100,
+"height":100,
+"color":(100,100,100)
+}
+animation = {
+    "pos":pos,
+    "dir":dir,
+    "obj":o,
+    "time": time,
+    "maxTime":maxTime,
+    "running":running,
+    "delt": delt,
+    "color":(250,250,250),
+    "width":100,
+    "height":180,
+    "shape":"rect"
+}
+return animation
 
-    def run(animation) -> dict:
-        time = animation["time"]
-        maxTime = animation["maxTime"]
-        while animation["running"]:
+def run(animation) -> dict:
+time = animation["time"]
+maxTime = animation["maxTime"]
+while animation["running"]:
 
-            output = {
-            "pos":animation["pos"],
-            "dir":animation["dir"],
-            "obj":animation["obj"],
-            "time": time,
-            "maxTime":maxTime,
-            "running":animation["running"],
-            "delt": animation["delt"],
-            "color":animation["color"],
-            "width":animation['width'],
-            "height":animation["height"],
-            "shape":"rect"
-        }
-            if time >= maxTime:
-                animation["running"] = False
-        return output
+    output = {
+    "pos":animation["pos"],
+    "dir":animation["dir"],
+    "obj":animation["obj"],
+    "time": time,
+    "maxTime":maxTime,
+    "running":animation["running"],
+    "delt": animation["delt"],
+    "color":animation["color"],
+    "width":animation['width'],
+    "height":animation["height"],
+    "shape":"rect"
+}
+    if time >= maxTime:
+        animation["running"] = False
+return output
         """
         os.popen("mkdir animations")
         print("writting file (anima.py) ...")
@@ -126,6 +126,7 @@ from engine import docker
         print("done")
 
 class MainEngine():
+    direction2 = {"x":0,"y":0}
     def _get_obj(name:str):
         input = {
             1:10
@@ -199,8 +200,15 @@ class PhysicsEngine():
                 direction["x"] = speed
         return direction
 
-    def bal_Physics(event, speed: int):
-        direction2 = {"x": speed, "y": speed}
+    def bal_Physics(keyset,event, speed: int):
+        if event.key == keyset["x+"]:
+            direction2["x"] = speed
+        if event.key == keyset["x-"]:
+            direction2["x"] = -speed
+        if event.key == keyset["y+"]:
+            direction2["y"] = speed
+        if event.key == keyset["y-"]:
+            direction2["y"] = -speed 
         return direction2
 
 class  ProceduralRenderEngine():
