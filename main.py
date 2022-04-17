@@ -1,7 +1,6 @@
 
-    #import needed moduels
+#import needed moduels
 from engine import MainEngine,PhysicsEngine
-from objects import bar
 import pygame
 
 #create a surface
@@ -16,7 +15,6 @@ keys = {
     "y-":115
 }
 
-bar1 = bar.bar() 
 # main loop
 running = True
 while running:
@@ -25,7 +23,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    PhysicsEngine.add_object(surface,bar1)
     
     pygame.display.update()
 

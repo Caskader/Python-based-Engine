@@ -1,12 +1,18 @@
 import pygame
-import os
+import json
 
 pygame.init()
 direction = {"x": 0, "y": 0, 3: False}
 direction2 = {"x": 0, "y": 0, 3: False}
 
+
 class docker():
-    def newProject():
+    def __init__(self) -> None:
+        # don't remove this code
+        print("welcome to the Pygame Engine ,made by Sidhh Vasa(Caskader)")
+        self.version = "0.5.8"
+
+    def new_project():
         print("creating template ...")
         boiler_plate = """
 #import needed moduels
@@ -45,16 +51,16 @@ MainEngine.quitEN()
         print("done")
 
         print("writing file (dock.py)")
-        with open("dock.py","w+") as f:
+        with open("dock.py", "w+") as f:
             s = """
 from engine import docker
             """
             f.write(s)
         print("done")
 
-    def new_animation(name:str):
-            print("creting template ...")
-            boiler_plate2 = """    
+    def new_animation(name: str):
+        print("creting template ...")
+        boiler_plate2 = """    
 from engine import *
 run = True
 def load():
@@ -108,19 +114,19 @@ while animation["running"]:
         animation["running"] = False
 return output
         """
-            print("writting file (anima.py) ...")
-            with open(name,"w+") as f:
-                f.write(boiler_plate2)
-            print("done")
+        print("writting file (anima.py) ...")
+        with open(name, "w+") as f:
+            f.write(boiler_plate2)
+        print("done")
 
-            print("writing file (dock.py)")
-            with open("dock.py","w+") as f:
-                s = """
+        print("writing file (dock.py)")
+        with open("dock.py", "w+") as f:
+            s = """
 from engine import docker
             """
-                f.write(s)
-            print("done")
-    
+            f.write(s)
+        print("done")
+
     def new_obj(name):
         x = """
 class obj1():
@@ -132,8 +138,44 @@ class obj1():
         self.color = (250,250,250)
         self.shape = 'rect'
     """
-        with open(name + ".py","w+") as f:
+        with open(name + ".py", "w+") as f:
             f.write(x)
+
+    def extract_obj(simple_file, extraction):
+        data = ""
+        with open(simple_file, "r") as f:
+            print("reading file ...")
+            a = f.read()
+            f.close()
+        data = json.loads(a)
+
+        print("compilling file ...")
+
+        for i in data['layers']:
+            print("creating objects ...")
+            with open(extraction+"/"+i + ".py", "w+") as f:
+                try:
+                    temp = """
+class """+i+"""():
+    def __init__(self) -> None:
+        self.pos = """ + str("{'x':" + str(data["x"]) + ",'y':" + str(data['y']) + "}") + """
+        self.dir = {'x':0,'y':0}
+        self.width = """ + str(data['width'])+"""
+        self.height = """+str(data['height'])+"""
+        self.shape = None
+    """
+                    f.write(temp)
+                    f.close()
+                    print("done ...")
+                except:
+                    print("ERROR:not able to compile the file, see that the file was compiled in simple format")
+            print("done compliling")
+        with open("dock.py", "w+") as f:
+            s = """
+from engine import docker
+            """
+            f.write(s)
+
 
 class MainEngine():
 
@@ -149,16 +191,15 @@ class MainEngine():
 
     def get_event():
         return pygame.event.get()
-    
-    def add_child(obj1,obj2,a):
+
+    def add_child(obj1, obj2, a):
         pos = obj1 + a
         return pos
 
 
 class PhysicsEngine():
-    def collier_square(obj1,obj2):
+    def collier_square(obj1, obj2):
         return obj1.colliderect(obj2)
-
 
     def add_object(surface, obj) -> None:
         obj.pos["x"] += obj.dir["x"]
@@ -170,12 +211,13 @@ class PhysicsEngine():
         a = None
         try:
             if obj.shape == "rect":
-                a = pygame.draw.rect(surface, color, (obj.pos["x"], obj.pos["y"], width, height))
+                a = pygame.draw.rect(
+                    surface, color, (obj.pos["x"], obj.pos["y"], width, height))
         except:
             print("an error occured")
         return a
 
-    def moving_body( keyset:dict,event, speed:int) -> dict[3]:
+    def moving_body(keyset: dict, event, speed: int) -> dict[3]:
         direction = {"x": 0, "y": 0, 3: False}
         if event.type == pygame.KEYDOWN:
             if event.key == keyset["x+"]:
@@ -208,9 +250,10 @@ class PhysicsEngine():
         direction2 = {"x": speed, "y": speed}
         return direction2
 
-class  ProceduralRenderEngine():
-    def add_animation(name:str):
-        with open(name + ".py","w+") as f:
+
+class ProceduralRenderEngine():
+    def add_animation(name: str):
+        with open(name + ".py", "w+") as f:
             template = """
 from engine import ProceduralRenderEngine
             
