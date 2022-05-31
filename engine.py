@@ -190,15 +190,6 @@ color = (10,10,10)
             """
             f.write(t)
 
-    def startEn(w,h,c,running):
-        MainEngine.default_sets(w,h,c)
-        while running :
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-
-                    MainEngine.quitEN()
-            LiveEngine.reload()
-
 class LiveEngine():
     def run(file,running):
         MainEngine.default_sets(100,100,10)
@@ -221,7 +212,9 @@ class LiveEngine():
             pygame.display.update()
         MainEngine.quitEN()
 class MainEngine():
-
+    def __init__(self) -> None:
+        self.version = "1.0.1"
+        print("welcome to the Engine :-"+self.version)
     def quitEN() -> None:
         pygame.quit()
         quit()
