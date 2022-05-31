@@ -156,13 +156,14 @@ class obj1():
             with open(extraction+"/"+i + ".py", "w+") as f:
                 try:
                     temp = """
-class """+i+"""():
+class """+"obj" +"""():
     def __init__(self) -> None:
         self.pos = """ + str("{'x':" + str(data["x"]) + ",'y':" + str(data['y']) + "}") + """
         self.dir = {'x':0,'y':0}
         self.width = """ + str(data['width'])+"""
         self.height = """+str(data['height'])+"""
         self.shape = None
+        self.image = '"""+ i+"""'
     """
                     f.write(temp)
                     f.close()
@@ -175,8 +176,50 @@ class """+i+"""():
 from engine import docker
             """
             f.write(s)
+            
+    def new_shaders(name):
+        with open(name + ".py","w+") as f:
+            t = """
+
+from engine import *
+import PIL
+
+color = (10,10,10)
 
 
+            """
+            f.write(t)
+
+    def startEn(w,h,c,running):
+        MainEngine.default_sets(w,h,c)
+        while running :
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+
+                    MainEngine.quitEN()
+            LiveEngine.reload()
+
+class LiveEngine():
+    def run(file,running):
+        MainEngine.default_sets(100,100,10)
+        code = ""
+        # MainEngine.default_sets()
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_0:
+                        with open(file,"r")as f:
+                            code = f.readlines()
+                            f.close()
+            i = 0
+            for line in code:
+                exec(code[i])
+                i += 1
+
+            pygame.display.update()
+        MainEngine.quitEN()
 class MainEngine():
 
     def quitEN() -> None:
@@ -195,27 +238,28 @@ class MainEngine():
     def add_child(obj1, obj2, a):
         pos = obj1 + a
         return pos
-
-
-class PhysicsEngine():
-    def collier_square(obj1, obj2):
-        return obj1.colliderect(obj2)
-
+    
     def add_object(surface, obj) -> None:
         obj.pos["x"] += obj.dir["x"]
         obj.pos["y"] += obj.dir["y"]
-        color = obj.color
         width = obj.width
         height = obj.height
 
         a = None
-        try:
-            if obj.shape == "rect":
-                a = pygame.draw.rect(
-                    surface, color, (obj.pos["x"], obj.pos["y"], width, height))
-        except:
-            print("an error occured")
+        # try:
+        if obj.shape == "rect":
+            color = obj.color
+            a = pygame.draw.rect( surface, color, (obj.pos["x"], obj.pos["y"], width, height))
+        if obj.shape == None:
+            img = pygame.image.load(obj.image)
+            surface.blit(img,(obj.pos['x'],obj.pos['y']))
+        # except:
+        #     print("an error occured")
         return a
+
+class PhysicsEngine():
+    def collier_square(obj1, obj2):
+        return obj1.colliderect(obj2)
 
     def moving_body(keyset: dict, event, speed: int) -> dict[3]:
         direction = {"x": 0, "y": 0, 3: False}
