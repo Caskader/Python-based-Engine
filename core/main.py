@@ -1,6 +1,7 @@
 
 #import needed moduels
-from engine import MainEngine,PhysicsEngine
+from lib.engine import MainEngine,PhysicsEngine
+from core import ok
 import pygame
 
 #create a surface
@@ -23,6 +24,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    
+    ok.run()
     
     pygame.display.update()
 

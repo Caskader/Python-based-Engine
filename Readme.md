@@ -52,7 +52,7 @@ pos={"x":0,"y":0}`
 
 ### Main loop
 
-Everything here is the Main FUntion of Collision, Physics and Object. The main Variables are used here.
+Everything here is the Main Funtion of Collision, Physics and Object. The main Variables are used here.
 
 `running = True`
 
@@ -71,3 +71,8 @@ Everything here is the Main FUntion of Collision, Physics and Object. The main V
 ### End
 
 When the exicution of the game is over, This is called .
+
+# Gettting Started
+
+## adding objects
+    

@@ -1,4 +1,4 @@
-import pygame
+import pygame 
 import json
 
 pygame.init()
@@ -6,13 +6,13 @@ direction = {"x": 0, "y": 0, 3: False}
 direction2 = {"x": 0, "y": 0, 3: False}
 
 
-class docker():
+class dock():
     def __init__(self) -> None:
         # don't remove this code
         print("welcome to the Pygame Engine ,made by Sidhh Vasa(Caskader)")
         self.version = "0.5.8"
 
-    def new_project():
+    def new_project(dir:str):
         print("creating template ...")
         boiler_plate = """
 #import needed moduels
@@ -46,17 +46,21 @@ while running:
 MainEngine.quitEN()
         """
         print("writing file (main.py)...")
-        with open("main.py", "w+") as f:
-            f.write(boiler_plate)
+        # with open(dir+"main.py", "w+") as f:
+        #     f.write(boiler_plate)
         print("done")
+        f = open(dir+"main.py",'x')
+        f.write(boiler_plate) 
 
-        print("writing file (dock.py)")
-        with open("dock.py", "w+") as f:
-            s = """
-from engine import docker
+    def saveinfo():
+        with open('info.json',"w+") as f:
+            o = """
+            {
+                "mass":"10",
+                "gravity":"1"
+            }
             """
-            f.write(s)
-        print("done")
+            f.write(o)
 
     def new_animation(name: str):
         print("creting template ...")
@@ -127,7 +131,7 @@ from engine import docker
             f.write(s)
         print("done")
 
-    def new_obj(name):
+    def new_obj(dir:str,name:str):
         x = """
 class obj1():
     def __init__(self) -> None:
@@ -138,8 +142,11 @@ class obj1():
         self.color = (250,250,250)
         self.shape = 'rect'
     """
-        with open(name + ".py", "w+") as f:
+        print('creating object...')
+        with open(dir+name + ".py", "w+") as f:
             f.write(x)
+            print('obj created ...')
+
 
     def extract_obj(simple_file, extraction):
         data = ""
@@ -286,6 +293,16 @@ class PhysicsEngine():
     def bal_Physics(event, speed: int):
         direction2 = {"x": speed, "y": speed}
         return direction2
+
+    class kinemeticbody():
+        def inittialize(mass,gravity):
+            inersia = mass + 10
+            velocity = {
+                "u":0,
+                "v":0
+            }
+            acceleration = velocity['v'] - velocity['u'] / 1
+            movementum = mass * velocity['v']
 
 
 class ProceduralRenderEngine():
